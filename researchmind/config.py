@@ -1,0 +1,116 @@
+from __future__ import annotations
+
+import os
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+DATA_DIR = BASE_DIR / "data"
+UPLOAD_DIR = DATA_DIR / "uploads"
+CHROMA_DIR = DATA_DIR / "chroma"
+WEB_SOURCES_FILE = DATA_DIR / "web_sources.json"
+PARENT_STORE_FILE = DATA_DIR / "parent_store.json"
+
+SUPPORTED_MODELS = [
+    "qwen-plus",
+    "qwen-max",
+    "qwen3.5-flash",
+    "glm-5"
+]
+
+DEFAULT_MODEL = "qwen-plus"
+TEMPERATURE = 0.2
+REQUEST_TIMEOUT_SECONDS = 90
+MAX_RETRIES = 2
+MAX_OUTPUT_TOKENS = 1200
+FAST_MAX_OUTPUT_TOKENS = 700
+EXTREME_MAX_OUTPUT_TOKENS = 420
+
+RAG_MODE_AUTO = "auto"
+RAG_MODE_FORCE = "force"
+RAG_MODE_OFF = "off"
+RAG_MODES = [RAG_MODE_AUTO, RAG_MODE_FORCE, RAG_MODE_OFF]
+DEFAULT_RAG_MODE = RAG_MODE_AUTO
+RAG_MODE_LABELS = {
+    RAG_MODE_AUTO: "自动路由",
+    RAG_MODE_FORCE: "强制 RAG",
+    RAG_MODE_OFF: "禁用 RAG",
+}
+
+EXECUTION_MODE_BALANCED = "balanced"
+EXECUTION_MODE_FAST = "fast"
+EXECUTION_MODE_EXTREME = "extreme"
+EXECUTION_MODES = [EXECUTION_MODE_BALANCED, EXECUTION_MODE_FAST, EXECUTION_MODE_EXTREME]
+DEFAULT_EXECUTION_MODE = EXECUTION_MODE_BALANCED
+EXECUTION_MODE_LABELS = {
+    EXECUTION_MODE_BALANCED: "平衡（效果优先）",
+    EXECUTION_MODE_FAST: "快速（速度优先）",
+    EXECUTION_MODE_EXTREME: "极限加速（延迟最低）",
+}
+
+FONT_SIZE_SMALL = "small"
+FONT_SIZE_MEDIUM = "medium"
+FONT_SIZE_LARGE = "large"
+FONT_SIZE_OPTIONS = [FONT_SIZE_SMALL, FONT_SIZE_MEDIUM, FONT_SIZE_LARGE]
+DEFAULT_FONT_SIZE = FONT_SIZE_MEDIUM
+FONT_SIZE_LABELS = {
+    FONT_SIZE_SMALL: "小",
+    FONT_SIZE_MEDIUM: "中",
+    FONT_SIZE_LARGE: "大",
+}
+FONT_SIZE_VALUES = {
+    FONT_SIZE_SMALL: "14px",
+    FONT_SIZE_MEDIUM: "16px",
+    FONT_SIZE_LARGE: "18px",
+}
+
+EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
+CHUNK_SIZE = 800
+CHUNK_OVERLAP = 120
+TOP_K = 4
+
+PARENT_CHUNK_SIZE = 2200
+PARENT_CHUNK_OVERLAP = 240
+CHILD_CHUNK_SIZE = 550
+CHILD_CHUNK_OVERLAP = 90
+
+HYBRID_CANDIDATE_K = 12
+HYBRID_WEIGHT_DENSE = 0.65
+HYBRID_WEIGHT_SPARSE = 0.35
+RERANK_MAX_DOCS = 6
+
+MAX_SUBQUESTIONS = 3
+MAX_TOOL_CALLS = 3
+MAX_ITERATIONS = 4
+CONTEXT_TOKEN_THRESHOLD = 4200
+COMPRESSED_CONTEXT_LIMIT = 2600
+
+FAST_MAX_SUBQUESTIONS = 2
+FAST_MAX_TOOL_CALLS = 2
+FAST_MAX_ITERATIONS = 2
+FAST_CONTEXT_TOKEN_THRESHOLD = 2600
+FAST_COMPRESSED_CONTEXT_LIMIT = 1400
+
+EXTREME_MAX_SUBQUESTIONS = 1
+EXTREME_MAX_TOOL_CALLS = 1
+EXTREME_MAX_ITERATIONS = 1
+EXTREME_CONTEXT_TOKEN_THRESHOLD = 1600
+EXTREME_COMPRESSED_CONTEXT_LIMIT = 900
+
+
+def ensure_dirs() -> None:
+    UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+    CHROMA_DIR.mkdir(parents=True, exist_ok=True)
+    if not WEB_SOURCES_FILE.exists():
+        WEB_SOURCES_FILE.write_text("[]", encoding="utf-8")
+    if not PARENT_STORE_FILE.exists():
+        PARENT_STORE_FILE.write_text("{}", encoding="utf-8")
+
+
+def get_dashscope_api_key() -> str:
+    key = os.getenv("DASHSCOPE_API_KEY") or os.getenv("OPENAI_API_KEY")
+    if not key:
+        raise RuntimeError(
+            "未检测到 DASHSCOPE_API_KEY（兼容 OPENAI_API_KEY）。"
+            "请先在环境变量中配置阿里 DashScope Key。"
+        )
+    return key
