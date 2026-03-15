@@ -113,7 +113,7 @@ div[data-testid="stChatInput"] {{
 
 
 def run_app() -> None:
-    st.set_page_config(page_title="ResearchMind", page_icon="🧠", layout="wide")
+    st.set_page_config(page_title="ResearchMind", page_icon="📓", layout="wide")
     _init_state()
 
     with st.sidebar:
@@ -189,8 +189,8 @@ def run_app() -> None:
 
     _apply_font_size(st.session_state.font_size)
 
-    st.title("🧠 ResearchMind")
-    st.caption("多 Agent 协作（文献综述 + 数据分析 + 论文写作）与 RAG 驱动的研究助手")
+    st.title("📓 ResearchMind")
+    st.caption("多 Agent 协作与 RAG 驱动的研究助手")
 
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):

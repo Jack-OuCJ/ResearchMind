@@ -11,13 +11,13 @@ WEB_SOURCES_FILE = DATA_DIR / "web_sources.json"
 PARENT_STORE_FILE = DATA_DIR / "parent_store.json"
 
 SUPPORTED_MODELS = [
-    "qwen-plus",
+    "qwen3.5-plus",
     "qwen-max",
     "qwen3.5-flash",
     "glm-5"
 ]
 
-DEFAULT_MODEL = "qwen-plus"
+DEFAULT_MODEL = "qwen3.5-plus"
 TEMPERATURE = 0.2
 REQUEST_TIMEOUT_SECONDS = 90
 MAX_RETRIES = 2
